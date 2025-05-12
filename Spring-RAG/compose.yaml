@@ -1,0 +1,11 @@
+services:
+  pgvector:
+    image: 'pgvector/pgvector:0.7.4-pg17'
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: markets
+    labels:
+      - "org.springframework.boot.service-connection=postgres"
+    ports:
+      - '5432:5432'
