@@ -7,12 +7,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="PromptAndOutput" />
+        <module name="LLMStructuredOutput" />
         <module name="Spring-RAG" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="LLMStructuredOutput" options="-parameters" />
       <module name="PromptAndOutput" options="-parameters" />
       <module name="Spring-RAG" options="-parameters" />
     </option>
