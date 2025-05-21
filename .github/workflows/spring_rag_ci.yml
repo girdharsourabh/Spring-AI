@@ -1,0 +1,33 @@
+name: Spring-RAG CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build, Test and Generate Coverage Report
+        run: mvn clean verify -f Spring-RAG/pom.xml
+
+      - name: Extract and Print Code Coverage
+        run: |
+          echo "Code Coverage for Spring-RAG:"
+          COVERAGE_FILE="Spring-RAG/target/site/jacoco/jacoco.csv"
+          if [ -f "$COVERAGE_FILE" ]; then
+            awk -F, 'NR == 2 { covered = $5; missed = $4; total = missed + covered; if (total > 0) printf "Instruction Coverage: %.2f%%\n", (covered / total) * 100; else print "Instruction Coverage: 0.00% (No instructions found/covered)"; }' "$COVERAGE_FILE"
+          else
+            echo "Coverage report not found at $COVERAGE_FILE. Check previous steps."
+            exit 1
+          fi
